@@ -24,22 +24,25 @@
   .karta h2 { margin: 0 0 .8rem; font-size: 1.05rem; color: var(--zielony-c);
     border-bottom: 2px solid var(--akcent); padding-bottom: .4rem; }
   label { display: block; font-size: .82rem; color: var(--szary); margin: .55rem 0 .2rem; }
+  label .symbol { color: #9aa; font-weight: 400; }
   input, select { width: 100%; padding: .45rem .55rem; border: 1px solid var(--linia);
     border-radius: 6px; font-size: .9rem; background: #fff; }
   .rzad { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
-  .rzad-3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: .5rem; align-items: end; }
+  .rzad-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .5rem; align-items: end; }
+  .rzad-wsad { display: grid; grid-template-columns: 2fr 1fr auto; gap: .5rem; align-items: end; }
   .substrat { border: 1px dashed var(--linia); border-radius: 8px; padding: .6rem;
     margin-bottom: .6rem; background: #fafdfa; }
-  .opcje { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: .5rem; margin-top: .5rem; }
-  .podgrupa { margin-top: .5rem; }
+  .opcje { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin-top: .5rem; }
+  .podgrupa { margin-top: .6rem; }
   .podgrupa > span { font-size: .76rem; color: var(--zielony-c); font-weight: 600; }
-  .podgrupa .pola { display: grid; grid-template-columns: repeat(5, 1fr); gap: .4rem; margin-top: .2rem; }
+  .podgrupa .pola { display: grid; grid-template-columns: repeat(5, 1fr); gap: .4rem; margin-top: .25rem; }
   .podgrupa .pola.metale { grid-template-columns: repeat(3, 1fr); }
+  .podgrupa .pola input { text-align: center; }
   button { cursor: pointer; border: none; border-radius: 7px; font-size: .9rem; font-weight: 600; }
   .btn-glowny { background: var(--zielony); color: #fff; padding: .7rem 1rem; width: 100%; margin-top: 1rem; }
   .btn-glowny:hover { background: var(--zielony-c); }
   .btn-maly { background: var(--akcent); color: var(--zielony-c); padding: .35rem .6rem; font-size: .8rem; }
-  .btn-usun { background: #fdecea; color: #b3261e; padding: .35rem .55rem; font-size: .8rem; }
+  .btn-usun { background: #fdecea; color: #b3261e; padding: .45rem .55rem; font-size: .8rem; }
   fieldset { border: 1px solid var(--linia); border-radius: 8px; margin: .8rem 0 0; padding: .5rem .8rem .8rem; }
   legend { font-size: .82rem; color: var(--zielony-c); font-weight: 600; padding: 0 .4rem; }
   .opis-poziomu { font-size: .8rem; color: var(--szary); margin-top: .35rem;
@@ -62,58 +65,73 @@
 <body>
 <header>
   <h1>Moduł koferymentacyjny — „Odpady → Energia”</h1>
-  <p>Koferymentacja osadów ściekowych i bioodpadów: wsad → biogaz → energia/ciepło lub biometan → poferment → wynik ekonomiczny</p>
+  <p>Wspólna fermentacja osadów ściekowych i bioodpadów: odpady → biogaz → prąd i ciepło (lub biometan) → nawóz (poferment) → wynik finansowy</p>
 </header>
 
 <main>
   <section class="karta">
-    <h2>Parametry wejściowe</h2>
+    <h2>Dane wejściowe</h2>
     <form id="formularz">
       <div class="rzad">
         <div>
-          <label for="poziom">Poziom wierności</label>
+          <label for="poziom">Poziom szczegółowości</label>
           <select id="poziom"></select>
         </div>
         <div data-min="2">
-          <label for="sciezka">Ścieżka wyjścia</label>
+          <label for="sciezka">Co robimy z biogazem?</label>
           <select id="sciezka"></select>
         </div>
       </div>
       <div class="opis-poziomu" id="opis-poziomu"></div>
 
       <fieldset>
-        <legend>Wsad (substraty)</legend>
+        <legend>Odpady przyjmowane do instalacji</legend>
         <div id="substraty"></div>
-        <button type="button" class="btn-maly" id="dodaj-substrat">+ Dodaj substrat</button>
+        <button type="button" class="btn-maly" id="dodaj-substrat">+ Dodaj rodzaj odpadu</button>
       </fieldset>
 
       <fieldset>
-        <legend>Proces</legend>
-        <label for="tryb">Tryb procesu</label>
+        <legend>Praca komory fermentacyjnej</legend>
+        <label for="tryb">Temperatura fermentacji</label>
         <select id="tryb"></select>
         <div class="rzad-3" data-min="2" style="margin-top:.5rem">
-          <div><label>HRT [dni]</label><input type="number" id="hrt" min="0" placeholder="domyślnie" /></div>
-          <div><label>OLR [kg VS/m³·d]</label><input type="number" id="olr" step="0.1" min="0" placeholder="domyślnie" /></div>
-          <div><label>η_VS</label><input type="number" id="eta_vs" step="0.01" min="0" max="1" placeholder="domyślnie" /></div>
+          <div>
+            <label>Czas w komorze [dni] <span class="symbol">(HRT)</span></label>
+            <input type="number" id="hrt" min="0" placeholder="domyślnie" />
+          </div>
+          <div>
+            <label>Obciążenie komory [kg org./m³·dobę] <span class="symbol">(OLR)</span></label>
+            <input type="number" id="olr" step="0.1" min="0" placeholder="domyślnie" />
+          </div>
+          <div>
+            <label>Stopień rozkładu materii org. [%] <span class="symbol">(η_VS)</span></label>
+            <input type="number" id="eta_vs" step="1" min="0" max="100" placeholder="domyślnie" />
+          </div>
         </div>
       </fieldset>
 
       <fieldset data-min="2">
-        <legend>Ekonomia</legend>
+        <legend>Założenia finansowe</legend>
         <div class="rzad">
-          <div><label>CAPEX [zł]</label><input type="number" id="capex" min="0" /></div>
-          <div><label>OPEX [zł/rok]</label><input type="number" id="opex" min="0" /></div>
+          <div>
+            <label>Nakłady inwestycyjne [zł] <span class="symbol">(CAPEX)</span></label>
+            <input type="number" id="capex" min="0" />
+          </div>
+          <div>
+            <label>Koszty roczne eksploatacji [zł/rok] <span class="symbol">(OPEX)</span></label>
+            <input type="number" id="opex" min="0" />
+          </div>
         </div>
         <div class="rzad-3" style="margin-top:.5rem">
-          <div><label>Stopa dysk.</label><input type="number" id="stopa" step="0.01" min="0" max="1" /></div>
-          <div><label>Okres [lat]</label><input type="number" id="okres" min="1" /></div>
-          <div><label>Dofin.</label><input type="number" id="dofin" step="0.05" min="0" max="1" /></div>
+          <div><label>Stopa dyskontowa [%]</label><input type="number" id="stopa" step="0.5" min="0" max="100" /></div>
+          <div><label>Okres analizy [lat]</label><input type="number" id="okres" min="1" /></div>
+          <div><label>Dofinansowanie [%]</label><input type="number" id="dofin" step="5" min="0" max="100" /></div>
         </div>
       </fieldset>
 
       <fieldset data-min="3">
-        <legend>Poferment — model chłonności rolniczej</legend>
-        <label for="areal">Dostępny areał rolny [ha]</label>
+        <legend>Zagospodarowanie pofermentu (nawozu)</legend>
+        <label for="areal">Dostępny areał rolny do rozlania pofermentu [ha]</label>
         <input type="number" id="areal" min="0" placeholder="opcjonalnie" />
       </fieldset>
 
@@ -122,21 +140,44 @@
   </section>
 
   <section class="karta">
-    <h2>Wynik symulacji</h2>
-    <div id="wynik"><p class="puste">Wypełnij formularz i kliknij „Oblicz”.</p></div>
+    <h2>Wynik</h2>
+    <div id="wynik"><p class="puste">Wypełnij dane i kliknij „Oblicz”.</p></div>
   </section>
 </main>
 
-<footer>Moduł cyfrowego bliźniaka gmin · API: <a href="/docs">/docs</a></footer>
+<footer>Moduł cyfrowego bliźniaka gmin · dokumentacja techniczna API: <a href="/docs">/docs</a></footer>
 
 <script>
 const $ = (id) => document.getElementById(id);
 let META = null;
 const POZIOM_NUM = { podstawowy: 1, profesjonalny: 2, precyzyjny: 3 };
+
+const ETYK_POZIOM = {
+  podstawowy: "Podstawowy — szybki szacunek",
+  profesjonalny: "Profesjonalny — decyzja inwestycyjna",
+  precyzyjny: "Precyzyjny — najwyższa dokładność",
+};
+const ETYK_SCIEZKA = {
+  chp: "Prąd i ciepło (kogeneracja)",
+  biometan: "Biometan (do sieci gazowej)",
+};
+const ETYK_TRYB = {
+  mezofilny: "Mezofilna (≈ 37 °C)",
+  termofilny: "Termofilna (≈ 53 °C)",
+};
+const ETYK_TYP = {
+  osady_wstepne: "Osady wstępne (ze ścieków)",
+  osady_nadmierne: "Osady nadmierne (ze ścieków)",
+  osady_mieszane: "Osady mieszane (ze ścieków)",
+  osady_przefermentowane: "Osady przefermentowane",
+  bio_kuchenne: "Bioodpady kuchenne",
+  bio_zielone: "Odpady zielone (ogrodowe)",
+  bio_mieszane: "Bioodpady zmieszane",
+};
 const OPIS = {
-  podstawowy: "Poziom 1: tylko masy i typy strumieni. Szybki szacunek energii i prostego zwrotu — reszta z wartości domyślnych katalogu.",
-  profesjonalny: "Poziom 2: zmierzone właściwości wsadu, parametry procesu, wybór ścieżki, pełna ekonomia (NPV/IRR/LCOE/LCOH) i analiza wrażliwości.",
-  precyzyjny: "Poziom 3: Y_CH4 z testu BMP, kontrola teoretyczna Buswella i model chłonności rolniczej pofermentu (limit azotanowy).",
+  podstawowy: "Wpisz tylko rodzaj i ilość odpadów — resztę policzymy z wartości typowych. Szybka odpowiedź „czy to ma sens”.",
+  profesjonalny: "Dodaj zmierzone właściwości odpadów, parametry pracy komory i założenia finansowe. Pełny wynik finansowy (opłacalność, koszty energii) i analiza wrażliwości.",
+  precyzyjny: "Najwyższa dokładność: wynik testu laboratoryjnego metanu, skład odpadów i sprawdzenie, ile pofermentu zagospodarujesz na polach.",
 };
 
 function opcje(select, lista, etykiety = {}) {
@@ -150,7 +191,7 @@ function zastosujPoziom() {
   document.querySelectorAll("[data-min]").forEach(el => {
     el.style.display = (parseInt(el.dataset.min, 10) <= lvl) ? "" : "none";
   });
-  if (lvl < 2) $("sciezka").value = "chp";  // poziom 1: tylko CHP
+  if (lvl < 2) $("sciezka").value = "chp";  // poziom podstawowy: tylko prąd i ciepło
   $("opis-poziomu").textContent = OPIS[$("poziom").value] || "";
 }
 
@@ -159,44 +200,44 @@ function wierszSubstratu(typDomyslny) {
   div.className = "substrat";
   const typy = META.typy_substratow;
   div.innerHTML = `
-    <div class="rzad-3">
+    <div class="rzad-wsad">
       <div>
-        <label>Typ</label>
-        <select class="s-typ">${typy.map(t => `<option value="${t}" ${t===typDomyslny?"selected":""}>${t}</option>`).join("")}</select>
+        <label>Rodzaj odpadu</label>
+        <select class="s-typ">${typy.map(t => `<option value="${t}" ${t===typDomyslny?"selected":""}>${ETYK_TYP[t]||t}</option>`).join("")}</select>
       </div>
       <div>
-        <label>Masa [Mg/rok]</label>
+        <label>Ilość [ton/rok]</label>
         <input type="number" class="s-masa" min="0" value="10000" />
       </div>
       <div><button type="button" class="btn-usun s-usun">Usuń</button></div>
     </div>
     <div class="opcje" data-min="2">
-      <div><label>TS_frac</label><input type="number" class="s-ts" step="0.01" min="0" max="1" placeholder="tablica" /></div>
-      <div><label>VS_frac</label><input type="number" class="s-vs" step="0.01" min="0" max="1" placeholder="tablica" /></div>
-      <div><label>Y_CH4 [NL/kg]</label><input type="number" class="s-y" min="0" placeholder="tablica" /></div>
-      <div><label>f_CH4</label><input type="number" class="s-f" step="0.01" min="0" max="1" placeholder="tablica" /></div>
+      <div><label>Zawartość suchej masy [%] <span class="symbol">(TS)</span></label><input type="number" class="s-ts" step="0.5" min="0" max="100" placeholder="domyślnie" /></div>
+      <div><label>Część organiczna w suchej masie [%] <span class="symbol">(VS)</span></label><input type="number" class="s-vs" step="0.5" min="0" max="100" placeholder="domyślnie" /></div>
+      <div><label>Wydajność metanu [l/kg materii org.] <span class="symbol">(Y_CH4)</span></label><input type="number" class="s-y" min="0" placeholder="domyślnie" /></div>
+      <div><label>Udział metanu w biogazie [%] <span class="symbol">(f_CH4)</span></label><input type="number" class="s-f" step="1" min="0" max="100" placeholder="domyślnie" /></div>
     </div>
     <div data-min="3">
       <div class="podgrupa">
-        <span>Y_CH4 z testu BMP [NL/kg VS]</span>
-        <div class="pola metale"><input type="number" class="s-bmp" min="0" placeholder="BMP" /></div>
+        <span>Wynik testu laboratoryjnego metanu [l/kg materii org.] — BMP</span>
+        <div class="pola metale"><input type="number" class="s-bmp" min="0" placeholder="np. 460" /></div>
       </div>
       <div class="podgrupa">
-        <span>Skład pierwiastkowy s.m.o. (udziały masowe) — kontrola Buswella</span>
+        <span>Skład odpadu — udziały pierwiastków [%] (sprawdzenie teoretycznego maksimum)</span>
         <div class="pola">
-          <input type="number" class="s-c" step="0.01" min="0" max="1" placeholder="C" />
-          <input type="number" class="s-h" step="0.01" min="0" max="1" placeholder="H" />
-          <input type="number" class="s-o" step="0.01" min="0" max="1" placeholder="O" />
-          <input type="number" class="s-n" step="0.01" min="0" max="1" placeholder="N" />
-          <input type="number" class="s-s" step="0.01" min="0" max="1" placeholder="S" />
+          <input type="number" class="s-c" step="1" min="0" max="100" placeholder="węgiel" />
+          <input type="number" class="s-h" step="1" min="0" max="100" placeholder="wodór" />
+          <input type="number" class="s-o" step="1" min="0" max="100" placeholder="tlen" />
+          <input type="number" class="s-n" step="1" min="0" max="100" placeholder="azot" />
+          <input type="number" class="s-s" step="1" min="0" max="100" placeholder="siarka" />
         </div>
       </div>
       <div class="podgrupa">
-        <span>Metale ciężkie [mg/kg s.m.] — status nawozowy</span>
+        <span>Metale ciężkie [mg/kg suchej masy] — decydują, czy poferment może być nawozem</span>
         <div class="pola metale">
-          <input type="number" class="s-cd" min="0" placeholder="Cd" />
-          <input type="number" class="s-pb" min="0" placeholder="Pb" />
-          <input type="number" class="s-hg" min="0" placeholder="Hg" />
+          <input type="number" class="s-cd" min="0" placeholder="kadm" />
+          <input type="number" class="s-pb" min="0" placeholder="ołów" />
+          <input type="number" class="s-hg" min="0" placeholder="rtęć" />
         </div>
       </div>
     </div>`;
@@ -206,13 +247,15 @@ function wierszSubstratu(typDomyslny) {
 
 async function init() {
   META = await (await fetch("/api/meta")).json();
-  opcje($("poziom"), META.poziomy);
+  opcje($("poziom"), META.poziomy, ETYK_POZIOM);
   $("poziom").value = "profesjonalny";
-  opcje($("sciezka"), META.sciezki, { chp: "CHP (energia + ciepło)", biometan: "Biometan" });
-  opcje($("tryb"), META.tryby);
+  opcje($("sciezka"), META.sciezki, ETYK_SCIEZKA);
+  opcje($("tryb"), META.tryby, ETYK_TRYB);
   const e = META.ekonomia_domyslna;
   $("capex").value = e.CAPEX_zl; $("opex").value = e.OPEX_zl_rok;
-  $("stopa").value = e.stopa_dysk; $("okres").value = e.okres_lat; $("dofin").value = e.dofinansowanie_frac;
+  $("stopa").value = +(e.stopa_dysk * 100).toFixed(2);
+  $("okres").value = e.okres_lat;
+  $("dofin").value = +(e.dofinansowanie_frac * 100).toFixed(2);
   $("substraty").appendChild(wierszSubstratu("osady_mieszane"));
   $("substraty").appendChild(wierszSubstratu("bio_kuchenne"));
   $("poziom").addEventListener("change", zastosujPoziom);
@@ -226,22 +269,24 @@ $("dodaj-substrat").addEventListener("click", () => {
 
 function liczbaLub(el) { const v = el.value.trim(); return v === "" ? null : parseFloat(v); }
 function dodajJesli(obj, klucz, el) { const v = liczbaLub(el); if (v !== null) obj[klucz] = v; }
+// pola wyrażone w % w interfejsie -> ułamek (0–1) oczekiwany przez silnik
+function dodajProc(obj, klucz, el) { const v = liczbaLub(el); if (v !== null) obj[klucz] = v / 100; }
 
 function zbierzWejscie() {
   const lvl = aktualnyPoziom();
   const wsad = [...document.querySelectorAll(".substrat")].map(s => {
     const o = { typ: s.querySelector(".s-typ").value, masa_roczna_Mg: parseFloat(s.querySelector(".s-masa").value) };
     if (lvl >= 2) {
-      dodajJesli(o, "TS_frac", s.querySelector(".s-ts"));
-      dodajJesli(o, "VS_frac", s.querySelector(".s-vs"));
+      dodajProc(o, "TS_frac", s.querySelector(".s-ts"));
+      dodajProc(o, "VS_frac", s.querySelector(".s-vs"));
       dodajJesli(o, "Y_CH4", s.querySelector(".s-y"));
-      dodajJesli(o, "f_CH4", s.querySelector(".s-f"));
+      dodajProc(o, "f_CH4", s.querySelector(".s-f"));
     }
     if (lvl >= 3) {
       dodajJesli(o, "BMP", s.querySelector(".s-bmp"));
       const sklad = {};
       [["C", ".s-c"], ["H", ".s-h"], ["O", ".s-o"], ["N", ".s-n"], ["S", ".s-s"]].forEach(([k, sel]) =>
-        dodajJesli(sklad, k, s.querySelector(sel)));
+        dodajProc(sklad, k, s.querySelector(sel)));
       if (Object.keys(sklad).length) o.sklad_pierwiastkowy = sklad;
       const metale = {};
       [["Cd", ".s-cd"], ["Pb", ".s-pb"], ["Hg", ".s-hg"]].forEach(([k, sel]) =>
@@ -259,12 +304,12 @@ function zbierzWejscie() {
   if (lvl >= 2) {
     dodajJesli(proces, "HRT_dni", $("hrt"));
     dodajJesli(proces, "OLR_kgVS_m3_d", $("olr"));
-    dodajJesli(proces, "eta_VS", $("eta_vs"));
+    dodajProc(proces, "eta_VS", $("eta_vs"));
     dodajJesli(ekon, "CAPEX_zl", $("capex"));
     dodajJesli(ekon, "OPEX_zl_rok", $("opex"));
-    dodajJesli(ekon, "stopa_dysk", $("stopa"));
+    dodajProc(ekon, "stopa_dysk", $("stopa"));
     if (liczbaLub($("okres")) !== null) ekon.okres_lat = parseInt($("okres").value, 10);
-    dodajJesli(ekon, "dofinansowanie_frac", $("dofin"));
+    dodajProc(ekon, "dofinansowanie_frac", $("dofin"));
   }
   if (lvl >= 3) dodajJesli(poferment, "areal_dostepny_ha", $("areal"));
 
@@ -285,59 +330,78 @@ function render(w) {
   let html = "";
 
   const wEnergia = [
-    ["Biogaz", fmt(e.biogaz_Nm3) + " Nm³/rok"],
-    ["Metan (CH₄)", fmt(e.CH4_Nm3) + " Nm³/rok"],
-    ["Energia w metanie", fmt(e.E_CH4_kWh / 1000) + " MWh/rok"],
+    ["Biogaz", fmt(e.biogaz_Nm3) + " m³/rok"],
+    ["w tym metan", fmt(e.CH4_Nm3) + " m³/rok"],
   ];
   if (e.E_el_netto_kWh != null) {
-    wEnergia.push(["Energia el. netto", fmt(e.E_el_netto_kWh / 1000) + " MWh/rok"]);
-    wEnergia.push(["Ciepło netto", fmt(e.Q_th_netto_kWh / 1000) + " MWh/rok"]);
+    wEnergia.push(["Prąd na sprzedaż (netto)", fmt(e.E_el_netto_kWh / 1000) + " MWh/rok"]);
+    wEnergia.push(["Ciepło na sprzedaż (netto)", fmt(e.Q_th_netto_kWh / 1000) + " MWh/rok"]);
   }
   if (e.E_biometan_kWh != null) {
-    wEnergia.push(["Biometan", fmt(e.biometan_Nm3) + " Nm³/rok"]);
+    wEnergia.push(["Biometan", fmt(e.biometan_Nm3) + " m³/rok"]);
     wEnergia.push(["Energia biometanu", fmt(e.E_biometan_kWh / 1000) + " MWh/rok"]);
   }
   html += `<div class="wynik-grupa"><h3>⚡ Energia</h3>${tabela(wEnergia)}</div>`;
 
-  html += `<div class="wynik-grupa"><h3>💰 Ekonomia</h3>${tabela([
+  html += `<div class="wynik-grupa"><h3>💰 Finanse</h3>${tabela([
     ["Przychody roczne", fmtZl(ek.przychody_roczne)],
-    ["Koszty roczne (OPEX)", fmtZl(ek.koszty_roczne)],
-    ["Przepływ roczny (CF)", fmtZl(ek.CF_rok)],
-    ["NPV", fmtZl(ek.NPV)],
-    ["IRR", fmtProc(ek.IRR)],
-    ["LCOE", ek.LCOE != null ? ek.LCOE.toFixed(3) + " zł/kWh" : "—"],
-    ["LCOH", ek.LCOH != null ? ek.LCOH.toFixed(3) + " zł/kWh" : "—"],
-    ["Payback (prosty)", ek.payback_lat != null ? ek.payback_lat.toFixed(1) + " lat" : "—"],
+    ["Koszty roczne", fmtZl(ek.koszty_roczne)],
+    ["Wynik roczny (przychody − koszty)", fmtZl(ek.CF_rok)],
+    ["Opłacalność inwestycji (NPV)", fmtZl(ek.NPV)],
+    ["Stopa zwrotu (IRR)", fmtProc(ek.IRR)],
+    ["Koszt wytworzenia prądu (LCOE)", ek.LCOE != null ? ek.LCOE.toFixed(3) + " zł/kWh" : "—"],
+    ["Koszt wytworzenia ciepła (LCOH)", ek.LCOH != null ? ek.LCOH.toFixed(3) + " zł/kWh" : "—"],
+    ["Czas zwrotu nakładów", ek.payback_lat != null ? ek.payback_lat.toFixed(1) + " lat" : "—"],
   ])}</div>`;
 
-  html += `<div class="wynik-grupa"><h3>🌱 Poferment</h3>${tabela([
-    ["Masa pofermentu", fmt(p.masa_Mg) + " Mg/rok"],
-    ["Frakcja stała", fmt(p.frakcja_stala_Mg) + " Mg/rok"],
-    ["N / P / K", `${fmt(p.NPK_kg_rok.N)} / ${fmt(p.NPK_kg_rok.P)} / ${fmt(p.NPK_kg_rok.K)} kg/rok`],
-    ["Status nawozowy", p.status_nawozowy],
-    ["Wymagany areał", fmt(p.chlonnosc_ha_wymagana, 1) + " ha"],
-    ["Zagospodarowanie", p.wariant_glowny],
+  html += `<div class="wynik-grupa"><h3>🌱 Poferment (nawóz)</h3>${tabela([
+    ["Ilość pofermentu", fmt(p.masa_Mg) + " ton/rok"],
+    ["w tym część stała (po odwodnieniu)", fmt(p.frakcja_stala_Mg) + " ton/rok"],
+    ["Azot / Fosfor / Potas", `${fmt(p.NPK_kg_rok.N)} / ${fmt(p.NPK_kg_rok.P)} / ${fmt(p.NPK_kg_rok.K)} kg/rok`],
+    ["Przydatność jako nawóz", tlumaczStatus(p.status_nawozowy)],
+    ["Potrzebny areał (limit azotu)", fmt(p.chlonnosc_ha_wymagana, 1) + " ha"],
+    ["Sposób zagospodarowania", tlumaczWariant(p.wariant_glowny)],
   ])}</div>`;
 
-  html += `<div class="wynik-grupa"><h3>⚖️ Bilans masy</h3>${tabela([
-    ["Wsad", fmt(b.wsad_Mg) + " Mg/rok"],
-    ["Biogaz", fmt(b.biogaz_Mg) + " Mg/rok"],
-    ["Poferment", fmt(b.poferment_Mg) + " Mg/rok"],
-    ["Domknięcie", b.domkniecie_proc.toFixed(1) + "%"],
-    ["Implikowany rozkład s.m.o.", b.spojnosc_gaz_so_proc.toFixed(0) + "%"],
+  html += `<div class="wynik-grupa"><h3>⚖️ Bilans masy (kontrola)</h3>${tabela([
+    ["Odpady na wejściu", fmt(b.wsad_Mg) + " ton/rok"],
+    ["Ubytek jako biogaz", fmt(b.biogaz_Mg) + " ton/rok"],
+    ["Poferment na wyjściu", fmt(b.poferment_Mg) + " ton/rok"],
+    ["Zgodność bilansu", b.domkniecie_proc.toFixed(1) + "%"],
+    ["Rozłożona materia organiczna", b.spojnosc_gaz_so_proc.toFixed(0) + "%"],
   ])}</div>`;
 
   if (ek.wrazliwosc && Object.keys(ek.wrazliwosc).length) {
+    const nazwy = { gate_fee: "Opłata za przyjęcie odpadów", c_el: "Cena prądu",
+      CAPEX: "Nakłady inwestycyjne", stopa_dysk: "Stopa dyskontowa", Y_CH4: "Wydajność metanu" };
     const wier = Object.entries(ek.wrazliwosc).map(([k, v]) =>
-      [k, `${fmtZl(v.wplyw_npv_dol)} … +${fmt(v.wplyw_npv_gora)} zł`]);
-    html += `<div class="wynik-grupa"><h3>📊 Wrażliwość NPV (±10%)</h3>${tabela(wier)}</div>`;
+      [nazwy[k] || k, `${fmtZl(v.wplyw_npv_dol)} … +${fmt(v.wplyw_npv_gora)} zł`]);
+    html += `<div class="wynik-grupa"><h3>📊 Wpływ na opłacalność (zmiana ±10%)</h3>${tabela(wier)}</div>`;
   }
 
   if (w.ostrzezenia && w.ostrzezenia.length) {
-    html += `<div class="ostrzezenia"><strong>⚠ Ostrzeżenia</strong><ul>${
+    html += `<div class="ostrzezenia"><strong>⚠ Uwagi</strong><ul>${
       w.ostrzezenia.map(o => `<li>${o}</li>`).join("")}</ul></div>`;
   }
   $("wynik").innerHTML = html;
+}
+
+function tlumaczStatus(s) {
+  return ({
+    nawozowy: "tak — spełnia wymagania",
+    nienawozowy_przekroczone_metale: "nie — przekroczone metale ciężkie",
+    nieokreslony_brak_danych: "nieokreślona (brak danych o metalach)",
+  })[s] || s;
+}
+function tlumaczWariant(w) {
+  return ({
+    nawoz: "nawóz na pola",
+    pelet_nawozowy: "pelet nawozowy",
+    pelet_palny: "pelet do spalania",
+    "nawoz+pelet_nawozowy": "nawóz na pola + pelet nawozowy (nadwyżka)",
+    "nawoz+pelet_palny": "nawóz na pola + pelet do spalania (nadwyżka)",
+    brak: "—",
+  })[w] || w;
 }
 
 $("formularz").addEventListener("submit", async (ev) => {
@@ -353,7 +417,7 @@ $("formularz").addEventListener("submit", async (ev) => {
       const opis = Array.isArray(dane.detail)
         ? dane.detail.map(d => `${(d.loc || []).join(".")}: ${d.msg}`).join("<br>")
         : (dane.detail || "Błąd serwera");
-      $("wynik").innerHTML = `<div class="blad"><strong>Błąd walidacji</strong><br>${opis}</div>`;
+      $("wynik").innerHTML = `<div class="blad"><strong>Sprawdź dane</strong><br>${opis}</div>`;
       return;
     }
     render(dane);
