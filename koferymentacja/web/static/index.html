@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Moduł koferymentacyjny — Odpady → Energia</title>
+<style>
+  :root {
+    --zielony: #2e7d32; --zielony-c: #1b5e20; --tlo: #f4f6f4; --karta: #fff;
+    --tekst: #1f2a24; --szary: #667; --linia: #dde3dd; --akcent: #e8f5e9;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: var(--tlo); color: var(--tekst); line-height: 1.5; }
+  header { background: linear-gradient(135deg, var(--zielony-c), var(--zielony));
+    color: #fff; padding: 1.4rem 1.5rem; }
+  header h1 { margin: 0; font-size: 1.35rem; }
+  header p { margin: .3rem 0 0; opacity: .9; font-size: .9rem; }
+  main { max-width: 1100px; margin: 1.4rem auto; padding: 0 1rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; }
+  @media (max-width: 860px) { main { grid-template-columns: 1fr; } }
+  .karta { background: var(--karta); border: 1px solid var(--linia);
+    border-radius: 10px; padding: 1.1rem 1.2rem; }
+  .karta h2 { margin: 0 0 .8rem; font-size: 1.05rem; color: var(--zielony-c);
+    border-bottom: 2px solid var(--akcent); padding-bottom: .4rem; }
+  label { display: block; font-size: .82rem; color: var(--szary); margin: .55rem 0 .2rem; }
+  input, select { width: 100%; padding: .45rem .55rem; border: 1px solid var(--linia);
+    border-radius: 6px; font-size: .9rem; background: #fff; }
+  .rzad { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .rzad-3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: .5rem; align-items: end; }
+  .substrat { border: 1px dashed var(--linia); border-radius: 8px; padding: .6rem;
+    margin-bottom: .6rem; background: #fafdfa; }
+  .substrat .opcje { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .5rem; margin-top: .4rem; }
+  button { cursor: pointer; border: none; border-radius: 7px; font-size: .9rem; font-weight: 600; }
+  .btn-glowny { background: var(--zielony); color: #fff; padding: .7rem 1rem; width: 100%; margin-top: 1rem; }
+  .btn-glowny:hover { background: var(--zielony-c); }
+  .btn-maly { background: var(--akcent); color: var(--zielony-c); padding: .35rem .6rem; font-size: .8rem; }
+  .btn-usun { background: #fdecea; color: #b3261e; padding: .35rem .55rem; font-size: .8rem; }
+  fieldset { border: 1px solid var(--linia); border-radius: 8px; margin: .8rem 0 0; padding: .5rem .8rem .8rem; }
+  legend { font-size: .82rem; color: var(--zielony-c); font-weight: 600; padding: 0 .4rem; }
+  .wynik-grupa { margin-bottom: 1rem; }
+  .wynik-grupa h3 { margin: .2rem 0 .5rem; font-size: .92rem; color: var(--zielony-c); }
+  table { width: 100%; border-collapse: collapse; font-size: .86rem; }
+  td { padding: .3rem .2rem; border-bottom: 1px solid #eef2ee; }
+  td:last-child { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+  .puste { color: var(--szary); font-style: italic; padding: 2rem 0; text-align: center; }
+  .ostrzezenia { background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px;
+    padding: .6rem .8rem; margin-top: .8rem; font-size: .84rem; }
+  .ostrzezenia ul { margin: .3rem 0 0; padding-left: 1.1rem; }
+  .blad { background: #fdecea; border: 1px solid #f5c6cb; color: #b3261e;
+    border-radius: 8px; padding: .6rem .8rem; margin-top: .8rem; font-size: .84rem; }
+  .ladowanie { color: var(--szary); padding: 2rem 0; text-align: center; }
+  .info { font-size: .78rem; color: var(--szary); margin-top: .2rem; }
+  footer { text-align: center; color: var(--szary); font-size: .78rem; padding: 1rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Moduł koferymentacyjny — „Odpady → Energia”</h1>
+  <p>Koferymentacja osadów ściekowych i bioodpadów: wsad → biogaz → energia/ciepło lub biometan → poferment → wynik ekonomiczny</p>
+</header>
+
+<main>
+  <section class="karta">
+    <h2>Parametry wejściowe</h2>
+    <form id="formularz">
+      <div class="rzad">
+        <div>
+          <label for="poziom">Poziom wierności</label>
+          <select id="poziom"></select>
+        </div>
+        <div>
+          <label for="sciezka">Ścieżka wyjścia</label>
+          <select id="sciezka"></select>
+        </div>
+      </div>
+      <div class="rzad">
+        <div>
+          <label for="tryb">Tryb procesu</label>
+          <select id="tryb"></select>
+        </div>
+        <div>
+          <label for="eta_vs">η_VS (rozkład s.m.o.) — opcjonalnie</label>
+          <input type="number" id="eta_vs" step="0.01" min="0" max="1" placeholder="domyślnie z trybu" />
+        </div>
+      </div>
+
+      <fieldset>
+        <legend>Wsad (substraty)</legend>
+        <div id="substraty"></div>
+        <button type="button" class="btn-maly" id="dodaj-substrat">+ Dodaj substrat</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>Ekonomia (opcjonalnie)</legend>
+        <div class="rzad">
+          <div><label>CAPEX [zł]</label><input type="number" id="capex" min="0" /></div>
+          <div><label>OPEX [zł/rok]</label><input type="number" id="opex" min="0" /></div>
+        </div>
+        <div class="rzad-3" style="margin-top:.5rem">
+          <div><label>Stopa dysk.</label><input type="number" id="stopa" step="0.01" min="0" max="1" /></div>
+          <div><label>Okres [lat]</label><input type="number" id="okres" min="1" /></div>
+          <div><label>Dofin.</label><input type="number" id="dofin" step="0.05" min="0" max="1" /></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Poferment (poziom precyzyjny)</legend>
+        <label for="areal">Dostępny areał rolny [ha] — model chłonności</label>
+        <input type="number" id="areal" min="0" placeholder="opcjonalnie" />
+      </fieldset>
+
+      <button type="submit" class="btn-glowny">Oblicz</button>
+    </form>
+  </section>
+
+  <section class="karta">
+    <h2>Wynik symulacji</h2>
+    <div id="wynik"><p class="puste">Wypełnij formularz i kliknij „Oblicz”.</p></div>
+  </section>
+</main>
+
+<footer>Moduł cyfrowego bliźniaka gmin · API: <a href="/docs">/docs</a></footer>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let META = null;
+
+function opcje(select, lista, etykiety = {}) {
+  select.innerHTML = lista.map(v => `<option value="${v}">${etykiety[v] || v}</option>`).join("");
+}
+
+function wierszSubstratu(typDomyslny) {
+  const div = document.createElement("div");
+  div.className = "substrat";
+  const typy = META.typy_substratow;
+  div.innerHTML = `
+    <div class="rzad-3">
+      <div>
+        <label>Typ</label>
+        <select class="s-typ">${typy.map(t => `<option value="${t}" ${t===typDomyslny?"selected":""}>${t}</option>`).join("")}</select>
+      </div>
+      <div>
+        <label>Masa [Mg/rok]</label>
+        <input type="number" class="s-masa" min="0" value="10000" />
+      </div>
+      <div>
+        <button type="button" class="btn-usun s-usun">Usuń</button>
+      </div>
+    </div>
+    <div class="opcje">
+      <div><label>TS_frac</label><input type="number" class="s-ts" step="0.01" min="0" max="1" placeholder="tablica" /></div>
+      <div><label>VS_frac</label><input type="number" class="s-vs" step="0.01" min="0" max="1" placeholder="tablica" /></div>
+      <div><label>Y_CH4 [NL/kg]</label><input type="number" class="s-y" min="0" placeholder="tablica" /></div>
+    </div>`;
+  div.querySelector(".s-usun").addEventListener("click", () => div.remove());
+  return div;
+}
+
+async function init() {
+  META = await (await fetch("/api/meta")).json();
+  opcje($("poziom"), META.poziomy);
+  $("poziom").value = "profesjonalny";
+  opcje($("sciezka"), META.sciezki, { chp: "CHP (energia + ciepło)", biometan: "Biometan" });
+  opcje($("tryb"), META.tryby);
+  const e = META.ekonomia_domyslna;
+  $("capex").value = e.CAPEX_zl; $("opex").value = e.OPEX_zl_rok;
+  $("stopa").value = e.stopa_dysk; $("okres").value = e.okres_lat; $("dofin").value = e.dofinansowanie_frac;
+  $("substraty").appendChild(wierszSubstratu("osady_mieszane"));
+  $("substraty").appendChild(wierszSubstratu("bio_kuchenne"));
+}
+
+$("dodaj-substrat").addEventListener("click", () =>
+  $("substraty").appendChild(wierszSubstratu(META.typy_substratow[0])));
+
+function liczbaLub(el) { const v = el.value.trim(); return v === "" ? null : parseFloat(v); }
+
+function zbierzWejscie() {
+  const wsad = [...document.querySelectorAll(".substrat")].map(s => {
+    const o = { typ: s.querySelector(".s-typ").value, masa_roczna_Mg: parseFloat(s.querySelector(".s-masa").value) };
+    const ts = liczbaLub(s.querySelector(".s-ts")), vs = liczbaLub(s.querySelector(".s-vs")), y = liczbaLub(s.querySelector(".s-y"));
+    if (ts !== null) o.TS_frac = ts;
+    if (vs !== null) o.VS_frac = vs;
+    if (y !== null) o.Y_CH4 = y;
+    return o;
+  });
+  const ekon = {};
+  if (liczbaLub($("capex")) !== null) ekon.CAPEX_zl = liczbaLub($("capex"));
+  if (liczbaLub($("opex")) !== null) ekon.OPEX_zl_rok = liczbaLub($("opex"));
+  if (liczbaLub($("stopa")) !== null) ekon.stopa_dysk = liczbaLub($("stopa"));
+  if (liczbaLub($("okres")) !== null) ekon.okres_lat = parseInt($("okres").value);
+  if (liczbaLub($("dofin")) !== null) ekon.dofinansowanie_frac = liczbaLub($("dofin"));
+  const proces = { tryb: $("tryb").value };
+  if (liczbaLub($("eta_vs")) !== null) proces.eta_VS = liczbaLub($("eta_vs"));
+  const poferment = {};
+  if (liczbaLub($("areal")) !== null) poferment.areal_dostepny_ha = liczbaLub($("areal"));
+  return { poziom: $("poziom").value, wsad, proces, wyjscie: { sciezka: $("sciezka").value }, ekonomia: ekon, poferment };
+}
+
+const fmt = (v, d = 0) => v === null || v === undefined ? "—"
+  : v.toLocaleString("pl-PL", { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmtZl = (v) => v === null || v === undefined ? "—" : fmt(v) + " zł";
+const fmtProc = (v) => v === null || v === undefined ? "—" : (v * 100).toFixed(1) + "%";
+
+function tabela(wiersze) {
+  return `<table>${wiersze.map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join("")}</table>`;
+}
+
+function render(w) {
+  const e = w.energia, p = w.poferment, ek = w.ekonomia, b = w.bilans_masy;
+  let html = "";
+
+  const wEnergia = [
+    ["Biogaz", fmt(e.biogaz_Nm3) + " Nm³/rok"],
+    ["Metan (CH₄)", fmt(e.CH4_Nm3) + " Nm³/rok"],
+    ["Energia w metanie", fmt(e.E_CH4_kWh / 1000) + " MWh/rok"],
+  ];
+  if (e.E_el_netto_kWh != null) {
+    wEnergia.push(["Energia el. netto", fmt(e.E_el_netto_kWh / 1000) + " MWh/rok"]);
+    wEnergia.push(["Ciepło netto", fmt(e.Q_th_netto_kWh / 1000) + " MWh/rok"]);
+  }
+  if (e.E_biometan_kWh != null) {
+    wEnergia.push(["Biometan", fmt(e.biometan_Nm3) + " Nm³/rok"]);
+    wEnergia.push(["Energia biometanu", fmt(e.E_biometan_kWh / 1000) + " MWh/rok"]);
+  }
+  html += `<div class="wynik-grupa"><h3>⚡ Energia</h3>${tabela(wEnergia)}</div>`;
+
+  html += `<div class="wynik-grupa"><h3>💰 Ekonomia</h3>${tabela([
+    ["Przychody roczne", fmtZl(ek.przychody_roczne)],
+    ["Koszty roczne (OPEX)", fmtZl(ek.koszty_roczne)],
+    ["Przepływ roczny (CF)", fmtZl(ek.CF_rok)],
+    ["NPV", fmtZl(ek.NPV)],
+    ["IRR", fmtProc(ek.IRR)],
+    ["LCOE", ek.LCOE != null ? ek.LCOE.toFixed(3) + " zł/kWh" : "—"],
+    ["LCOH", ek.LCOH != null ? ek.LCOH.toFixed(3) + " zł/kWh" : "—"],
+    ["Payback (prosty)", ek.payback_lat != null ? ek.payback_lat.toFixed(1) + " lat" : "—"],
+  ])}</div>`;
+
+  html += `<div class="wynik-grupa"><h3>🌱 Poferment</h3>${tabela([
+    ["Masa pofermentu", fmt(p.masa_Mg) + " Mg/rok"],
+    ["Frakcja stała", fmt(p.frakcja_stala_Mg) + " Mg/rok"],
+    ["N / P / K", `${fmt(p.NPK_kg_rok.N)} / ${fmt(p.NPK_kg_rok.P)} / ${fmt(p.NPK_kg_rok.K)} kg/rok`],
+    ["Status nawozowy", p.status_nawozowy],
+    ["Wymagany areał", fmt(p.chlonnosc_ha_wymagana, 1) + " ha"],
+    ["Zagospodarowanie", p.wariant_glowny],
+  ])}</div>`;
+
+  html += `<div class="wynik-grupa"><h3>⚖️ Bilans masy</h3>${tabela([
+    ["Wsad", fmt(b.wsad_Mg) + " Mg/rok"],
+    ["Biogaz", fmt(b.biogaz_Mg) + " Mg/rok"],
+    ["Poferment", fmt(b.poferment_Mg) + " Mg/rok"],
+    ["Domknięcie", b.domkniecie_proc.toFixed(1) + "%"],
+    ["Implikowany rozkład s.m.o.", b.spojnosc_gaz_so_proc.toFixed(0) + "%"],
+  ])}</div>`;
+
+  if (ek.wrazliwosc && Object.keys(ek.wrazliwosc).length) {
+    const wier = Object.entries(ek.wrazliwosc).map(([k, v]) =>
+      [k, `${fmtZl(v.wplyw_npv_dol)} … +${fmt(v.wplyw_npv_gora)} zł`]);
+    html += `<div class="wynik-grupa"><h3>📊 Wrażliwość NPV (±10%)</h3>${tabela(wier)}</div>`;
+  }
+
+  if (w.ostrzezenia && w.ostrzezenia.length) {
+    html += `<div class="ostrzezenia"><strong>⚠ Ostrzeżenia</strong><ul>${
+      w.ostrzezenia.map(o => `<li>${o}</li>`).join("")}</ul></div>`;
+  }
+  $("wynik").innerHTML = html;
+}
+
+$("formularz").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  $("wynik").innerHTML = `<p class="ladowanie">Obliczanie…</p>`;
+  try {
+    const r = await fetch("/api/symuluj", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(zbierzWejscie()),
+    });
+    const dane = await r.json();
+    if (!r.ok) {
+      const opis = Array.isArray(dane.detail)
+        ? dane.detail.map(d => `${(d.loc || []).join(".")}: ${d.msg}`).join("<br>")
+        : (dane.detail || "Błąd serwera");
+      $("wynik").innerHTML = `<div class="blad"><strong>Błąd walidacji</strong><br>${opis}</div>`;
+      return;
+    }
+    render(dane);
+  } catch (e) {
+    $("wynik").innerHTML = `<div class="blad">Błąd połączenia: ${e.message}</div>`;
+  }
+});
+
+init();
+</script>
+</body>
+</html>

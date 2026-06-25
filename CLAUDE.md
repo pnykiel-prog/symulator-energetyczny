@@ -36,11 +36,20 @@ koferymentacja/
 ├── core/            # silnik (czyste funkcje): units, feedstock, digestion,
 │                    #   energy, digestate, economics
 ├── io_layer/        # schema.py (pydantic wej/wyj) + report.py
+├── web/             # samodzielny interfejs: FastAPI (app.py) + static/index.html
 ├── config.py        # ładowanie data/*, rozwiązywanie parametrów wg poziomu
 └── simulate.py      # orkiestracja: wejście → silnik → wynik + walidacja + wrażliwość
-tests/               # testy jednostkowe + walidacja literaturowa + Buswell
+api/index.py         # punkt wejścia dla Vercel (funkcja serverless ASGI)
+vercel.json          # konfiguracja deployu na Vercel (+ includeFiles dla data/static)
+Dockerfile           # obraz do self-hostingu u gminy
+tests/               # testy jednostkowe + walidacja literaturowa + Buswell + API
 examples/przyklad.py # demo trzech poziomów
 ```
+
+**Samodzielność:** moduł ma własny interfejs (`web/`), bo gmina może chcieć
+tylko tę część symulatora. Ta sama apka FastAPI działa lokalnie (uvicorn),
+w Dockerze i na Vercel — bez zmian w kodzie. Warstwa web jest *cienka*: opakowuje
+`symuluj()`, nie dubluje logiki silnika.
 
 > **Uwaga nazewnicza:** katalog `io/` z wytycznych nazwano `io_layer/`, aby nie
 > przesłaniać modułu standardowej biblioteki `io`. Poza nazwą — zgodnie ze spec.
@@ -76,7 +85,8 @@ eksploatacyjnych (rozszerzenia P3).
 ## Uruchamianie
 
 ```bash
-pip install -e .          # lub: pip install -r requirements.txt
-python -m pytest          # testy
-python examples/przyklad.py
+pip install -e ".[web,dev]"              # silnik + interfejs web + testy
+python -m pytest                         # testy (54)
+python examples/przyklad.py              # demo trzech poziomów (headless)
+uvicorn koferymentacja.web.app:app --reload   # interfejs web -> http://127.0.0.1:8000/
 ```

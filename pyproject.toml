@@ -16,13 +16,19 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=7.0"]
+web = ["fastapi>=0.110", "uvicorn[standard]>=0.27"]
+dev = ["pytest>=7.0", "httpx>=0.27"]
 
 [tool.setuptools]
-packages = ["koferymentacja", "koferymentacja.core", "koferymentacja.io_layer"]
+packages = [
+    "koferymentacja",
+    "koferymentacja.core",
+    "koferymentacja.io_layer",
+    "koferymentacja.web",
+]
 
 [tool.setuptools.package-data]
-koferymentacja = ["data/*.json"]
+koferymentacja = ["data/*.json", "web/static/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

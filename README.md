@@ -46,6 +46,46 @@ for o in wynik.ostrzezenia:
 
 Pełne demo trzech poziomów: `python examples/przyklad.py`.
 
+## Interfejs web (samodzielna aplikacja)
+
+Moduł jest **samodzielny** — gmina może uruchomić tylko tę część symulatora,
+z własnym interfejsem, w oderwaniu od reszty cyfrowego bliźniaka. Ta sama
+aplikacja FastAPI (silnik + cienka warstwa we/wy) działa w trzech trybach bez
+zmian w kodzie:
+
+**Lokalnie (u gminy):**
+```bash
+pip install -e ".[web]"
+uvicorn koferymentacja.web.app:app --reload
+# formularz: http://127.0.0.1:8000/   ·   dokumentacja API: http://127.0.0.1:8000/docs
+```
+
+**Docker (własny serwer):**
+```bash
+docker build -t koferymentacja .
+docker run -p 8000:8000 koferymentacja
+```
+
+**Vercel (chmura, serverless):** repozytorium zawiera `vercel.json` i
+`api/index.py`. Po podłączeniu repo do Vercela deploy jest automatyczny —
+funkcja serverless serwuje formularz i API. Obliczenia trwają ułamki sekundy,
+więc limity czasu wykonania nie są problemem.
+
+### Endpointy
+
+| Metoda | Ścieżka | Opis |
+|---|---|---|
+| `GET` | `/` | Formularz web (HTML) |
+| `POST` | `/api/symuluj` | Uruchamia symulację (JSON wejściowy → `WynikSymulacji`) |
+| `GET` | `/api/meta` | Metadane do zbudowania formularza (typy, poziomy, domyślne) |
+| `GET` | `/api/health` | Health check |
+| `GET` | `/docs` | Interaktywna dokumentacja API (Swagger) |
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/symuluj -H "Content-Type: application/json" \
+  -d '{"poziom":"profesjonalny","wsad":[{"typ":"osady_mieszane","masa_roczna_Mg":12000}]}'
+```
+
 ## Poziomy wierności
 
 Jeden silnik, jeden model danych — poziom steruje tym, które dane są używane
