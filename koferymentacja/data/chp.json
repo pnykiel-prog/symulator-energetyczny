@@ -1,0 +1,17 @@
+{
+  "opis": "Sprawności układu kogeneracyjnego (CHP) i potrzeby własne instalacji (poziom 1: ryczałt, poziom 2: realne).",
+  "chp": {
+    "eta_el": 0.40,
+    "eta_th": 0.43,
+    "e_wlasne_frac": 0.08,
+    "q_wlasne_frac": 0.25,
+    "zakres": { "eta_el": [0.35, 0.43], "eta_th": [0.40, 0.48], "e_wlasne_frac": [0.05, 0.12], "q_wlasne_frac": [0.15, 0.35] },
+    "źródło": "Silnik gazowy CHP na biogaz ~0,5-2 MWel: eta_el 38-42%, eta_th 42-45%; potrzeby własne el. 8%, cieplne 25% (ogrzewanie komory). Weiland 2010, Deublein & Steinhauser 2011."
+  },
+  "biometan": {
+    "s_CH4_poslizg_frac": 0.02,
+    "energia_wlasna_kWh_per_Nm3_biogazu": 0.30,
+    "zakres": { "s_CH4_poslizg_frac": [0.005, 0.04] },
+    "źródło": "Uszlachetnianie biogazu do biometanu: poślizg metanu 0,5-4% zależnie od technologii; zużycie energii ~0,2-0,4 kWh/Nm3 biogazu (membrany/PSA/aminy)."
+  }
+}

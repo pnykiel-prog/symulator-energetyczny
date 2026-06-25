@@ -1,0 +1,69 @@
+{
+  "opis": "Domyślne charakterystyki substratów (poziom 1/2). Klucze NPK w kg/Mg świeżej masy. Y_CH4 w NL CH4/kg s.m.o. (VS). Zakresy literaturowe do walidacji.",
+  "źródło_ogolne": "ATV-DVWK-M 363, Weiland 2010 (Biogas production), Kacprzak i in. 2017, VDI 4630, Deublein & Steinhauser 2011. Wartości reprezentatywne, do nadpisania danymi lokalnymi.",
+  "substraty": {
+    "osady_wstepne": {
+      "TS_frac": 0.05,
+      "VS_frac": 0.75,
+      "Y_CH4": 350,
+      "f_CH4": 0.65,
+      "NPK_kg_per_Mg": { "N": 4.5, "P": 2.5, "K": 0.4 },
+      "zakres": { "Y_CH4": [250, 400], "TS_frac": [0.03, 0.08], "VS_frac": [0.65, 0.82], "f_CH4": [0.60, 0.70] },
+      "źródło": "Osady wstępne (pierwotne) z mechanicznego oczyszczania ścieków; wysoki uzysk CH4."
+    },
+    "osady_nadmierne": {
+      "TS_frac": 0.04,
+      "VS_frac": 0.70,
+      "Y_CH4": 200,
+      "f_CH4": 0.62,
+      "NPK_kg_per_Mg": { "N": 5.0, "P": 3.0, "K": 0.3 },
+      "zakres": { "Y_CH4": [150, 260], "TS_frac": [0.025, 0.06], "VS_frac": [0.60, 0.78], "f_CH4": [0.58, 0.66] },
+      "źródło": "Osady nadmierne (biologiczne, WAS); niższy uzysk z uwagi na trudniej dostępną materię komórkową."
+    },
+    "osady_mieszane": {
+      "TS_frac": 0.045,
+      "VS_frac": 0.72,
+      "Y_CH4": 280,
+      "f_CH4": 0.63,
+      "NPK_kg_per_Mg": { "N": 4.8, "P": 2.8, "K": 0.35 },
+      "zakres": { "Y_CH4": [220, 340], "TS_frac": [0.03, 0.07], "VS_frac": [0.62, 0.80], "f_CH4": [0.58, 0.68] },
+      "źródło": "Mieszanka osadów wstępnych i nadmiernych (typowy wsad WPOŚ)."
+    },
+    "osady_przefermentowane": {
+      "TS_frac": 0.03,
+      "VS_frac": 0.60,
+      "Y_CH4": 30,
+      "f_CH4": 0.60,
+      "NPK_kg_per_Mg": { "N": 4.0, "P": 2.5, "K": 0.3 },
+      "zakres": { "Y_CH4": [0, 80], "TS_frac": [0.02, 0.05], "VS_frac": [0.45, 0.65], "f_CH4": [0.55, 0.65] },
+      "źródło": "Osady przefermentowane (po komorze WKF); resztkowy uzysk biogazu bliski zeru."
+    },
+    "bio_kuchenne": {
+      "TS_frac": 0.28,
+      "VS_frac": 0.90,
+      "Y_CH4": 480,
+      "f_CH4": 0.62,
+      "NPK_kg_per_Mg": { "N": 5.5, "P": 1.2, "K": 3.0 },
+      "zakres": { "Y_CH4": [400, 550], "TS_frac": [0.20, 0.35], "VS_frac": [0.85, 0.95], "f_CH4": [0.58, 0.66] },
+      "źródło": "Bioodpady kuchenne (frakcja spożywcza); wysoki uzysk metanu."
+    },
+    "bio_zielone": {
+      "TS_frac": 0.35,
+      "VS_frac": 0.80,
+      "Y_CH4": 250,
+      "f_CH4": 0.55,
+      "NPK_kg_per_Mg": { "N": 4.0, "P": 1.0, "K": 4.0 },
+      "zakres": { "Y_CH4": [180, 320], "TS_frac": [0.25, 0.45], "VS_frac": [0.70, 0.90], "f_CH4": [0.50, 0.60] },
+      "źródło": "Odpady zielone/ogrodowe (lignocelulozowe); niższy uzysk i niższy udział CH4."
+    },
+    "bio_mieszane": {
+      "TS_frac": 0.30,
+      "VS_frac": 0.85,
+      "Y_CH4": 380,
+      "f_CH4": 0.60,
+      "NPK_kg_per_Mg": { "N": 5.0, "P": 1.1, "K": 3.5 },
+      "zakres": { "Y_CH4": [300, 460], "TS_frac": [0.22, 0.40], "VS_frac": [0.78, 0.92], "f_CH4": [0.55, 0.64] },
+      "źródło": "Bioodpady zmieszane (kuchenne + zielone, selektywnie zebrane)."
+    }
+  }
+}

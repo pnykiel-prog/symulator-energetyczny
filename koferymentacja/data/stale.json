@@ -1,0 +1,59 @@
+{
+  "opis": "Stałe fizyczne i normatywne. Zmiana stałej = zmiana danych, nie kodu.",
+  "Wo_CH4_kWh_per_Nm3": {
+    "wartosc": 9.97,
+    "jednostka": "kWh/Nm3",
+    "źródło": "Wartość opałowa metanu w warunkach normalnych (0 stC, 1013 hPa); GIS/IPCC, przyjęte 9,97 kWh/Nm3 CH4"
+  },
+  "limit_azotanowy_kgN_per_ha_rok": {
+    "wartosc": 170,
+    "jednostka": "kg N/(ha*rok)",
+    "źródło": "Dyrektywa azotanowa 91/676/EWG; rozp. ws. programu działań dot. azotu, 170 kg N/ha/rok na obszarach OSN"
+  },
+  "gestosc_biogazu_kg_per_Nm3": {
+    "wartosc": 1.22,
+    "jednostka": "kg/Nm3",
+    "źródło": "Gęstość biogazu ~60% CH4/40% CO2 w war. normalnych: 0,6*0,717 + 0,4*1,977 ~ 1,22 kg/Nm3"
+  },
+  "gestosc_CH4_kg_per_Nm3": {
+    "wartosc": 0.717,
+    "jednostka": "kg/Nm3",
+    "źródło": "Gęstość metanu w warunkach normalnych"
+  },
+  "gestosc_CO2_kg_per_Nm3": {
+    "wartosc": 1.977,
+    "jednostka": "kg/Nm3",
+    "źródło": "Gęstość dwutlenku węgla w warunkach normalnych"
+  },
+  "limity_metali_nawoz_mg_per_kg_sm": {
+    "opis": "Dopuszczalne zawartości metali ciężkich w nawozie/środku poprawiającym właściwości gleby (mg/kg suchej masy). Przekroczenie -> status nienawozowy.",
+    "Cd": 5,
+    "Pb": 140,
+    "Hg": 2,
+    "Ni": 60,
+    "Cr": 100,
+    "Cu": 800,
+    "Zn": 2500,
+    "źródło": "Wartości na podstawie rozp. MRiRW ws. wykonania niektórych przepisów ustawy o nawozach i nawożeniu (limity dla nawozów organicznych). Do weryfikacji z aktualnym aktem prawnym."
+  },
+  "buswell": {
+    "opis": "Stałe do równania Buswella (teoretyczny maksymalny uzysk CH4 ze składu pierwiastkowego).",
+    "osiagalne_frac_teorii": {
+      "wartosc": 0.92,
+      "źródło": "VDI 4630: praktycznie osiągalny uzysk ~92% maksimum teoretycznego"
+    },
+    "objetosc_molowa_Nm3_per_kmol": {
+      "wartosc": 22.414,
+      "jednostka": "Nm3/kmol",
+      "źródło": "Objętość molowa gazu doskonałego w warunkach normalnych"
+    },
+    "masy_molowe_kg_per_kmol": {
+      "C": 12.011,
+      "H": 1.008,
+      "O": 15.999,
+      "N": 14.007,
+      "S": 32.06,
+      "źródło": "Masy molowe pierwiastków (IUPAC)"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "opis": "Domyślne parametry procesu fermentacji wg trybu temperaturowego (poziom 2). Y_VS = stopień rozkładu s.m.o.",
+  "tryby": {
+    "mezofilny": {
+      "T_C": 37,
+      "HRT_dni": 22,
+      "OLR_kgVS_m3_d": 3.0,
+      "eta_VS": 0.50,
+      "zakres": { "T_C": [35, 42], "HRT_dni": [18, 30], "OLR_kgVS_m3_d": [2.0, 4.0], "eta_VS": [0.40, 0.60] },
+      "źródło": "Mezofilny zakres temperaturowy 35-42 stC; ATV-DVWK-M 363, Weiland 2010."
+    },
+    "termofilny": {
+      "T_C": 53,
+      "HRT_dni": 16,
+      "OLR_kgVS_m3_d": 4.0,
+      "eta_VS": 0.58,
+      "zakres": { "T_C": [50, 57], "HRT_dni": [12, 22], "OLR_kgVS_m3_d": [3.0, 6.0], "eta_VS": [0.45, 0.65] },
+      "źródło": "Termofilny zakres 50-57 stC; krótszy HRT, wyższy rozkład VS, większe potrzeby cieplne."
+    }
+  },
+  "u_frakcja_stala": {
+    "wartosc": 0.25,
+    "opis": "Udział frakcji stałej w pofermencie po odwadnianiu (poferment -> frakcja stała + ciekła).",
+    "zakres": [0.15, 0.35],
+    "źródło": "Typowy uzysk frakcji stałej po odwadnianiu pofermentu (prasa/wirówka)."
+  }
+}

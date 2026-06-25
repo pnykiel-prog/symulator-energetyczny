@@ -1,0 +1,35 @@
+{
+  "opis": "Parametry ekonomiczne. Wartości orientacyjne do nadpisania lokalnie. gate_fee i ceny w zł; CAPEX/OPEX w zł; stopa_dysk jako ułamek.",
+  "źródło_ogolne": "Wartości orientacyjne rynku PL (2023/2024). Do uzupełnienia danymi lokalnej instalacji.",
+  "gate_fee_zl_per_Mg": {
+    "osady_wstepne": 0,
+    "osady_nadmierne": 0,
+    "osady_mieszane": 0,
+    "osady_przefermentowane": 0,
+    "bio_kuchenne": 350,
+    "bio_zielone": 200,
+    "bio_mieszane": 300,
+    "źródło": "Opłata bramowa za przyjęcie bioodpadów (gate fee). Osady własne WPOŚ: 0 (brak opłaty)."
+  },
+  "ceny": {
+    "c_el_zl_per_kWh": 0.55,
+    "c_th_zl_per_kWh": 0.18,
+    "c_bm_zl_per_kWh": 0.35,
+    "c_POF_zl_per_Mg": 20,
+    "c_skladowanie_unikniete_zl_per_Mg": 0,
+    "źródło": "Cena energii el. (sprzedaż/autokonsumpcja), ciepła sieciowego, biometanu (ekwiwalent kWh), zbytu pofermentu jako nawozu."
+  },
+  "inwestycja": {
+    "CAPEX_zl": 25000000,
+    "OPEX_zl_rok": 1500000,
+    "stopa_dysk": 0.07,
+    "okres_lat": 15,
+    "dofinansowanie_frac": 0.0,
+    "źródło": "Nakład inwestycyjny i koszty operacyjne instalacji koferymentacji ~1 MWel. Orientacyjne."
+  },
+  "wrazliwosc": {
+    "delta_frac": 0.10,
+    "parametry": ["gate_fee", "c_el", "CAPEX", "stopa_dysk", "Y_CH4"],
+    "źródło": "Analiza wrażliwości NPV na +/-10% zmianę kluczowych parametrów."
+  }
+}
