@@ -44,12 +44,41 @@ app = FastAPI(
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
 def strona_glowna() -> str:
     """Serwuje formularz web."""
-    return (STATIC_DIR / "index.html").read_text(encoding="utf-8")
+    plik = STATIC_DIR / "index.html"
+    if not plik.exists():
+        raise HTTPException(
+            status_code=500,
+            detail=f"Brak pliku formularza: {plik} (sprawdź includeFiles w vercel.json).",
+        )
+    return plik.read_text(encoding="utf-8")
 
 
 @app.get("/api/health")
 def health() -> dict:
     return {"status": "ok"}
+
+
+@app.get("/api/debug")
+def debug() -> dict:
+    """Diagnostyka deployu: wersja Pythona i obecność plików danych/statyki.
+
+    Pomaga zweryfikować, czy ``includeFiles`` poprawnie zbundlował data/* i
+    static/index.html na środowisku serverless.
+    """
+    import sys
+    from ..config import DATA_DIR
+
+    pliki_data = {}
+    for nazwa in ("substraty.json", "proces.json", "chp.json", "ekonomia.json", "stale.json"):
+        pliki_data[nazwa] = (DATA_DIR / nazwa).exists()
+    return {
+        "python": sys.version,
+        "data_dir": str(DATA_DIR),
+        "data_dir_istnieje": DATA_DIR.exists(),
+        "pliki_data": pliki_data,
+        "static_dir": str(STATIC_DIR),
+        "index_html_istnieje": (STATIC_DIR / "index.html").exists(),
+    }
 
 
 @app.get("/api/meta")
